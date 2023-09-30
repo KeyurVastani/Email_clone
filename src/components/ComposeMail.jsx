@@ -5,9 +5,10 @@ import {
   Typography,
   styled,
   InputBase,
-  Input,
+  Button,
+  TextField,
 } from "@mui/material";
-import { Close } from "@mui/icons-material";
+import { Close, DeleteOutline } from "@mui/icons-material";
 
 const dialogStyle = {
   width: "80%",
@@ -33,26 +34,88 @@ const RecipientsWrapper = styled(Box)({
   display: "flex",
   flexDirection: "column",
   padding: "0 15px",
-  '& > div':{
-    fontSize:14,
-    borderBottom:'1px solid #f5f5f5',
-    marginTop:10
-  }
+  "& > div": {
+    fontSize: 14,
+    borderBottom: "1px solid #f5f5f5",
+    marginTop: 10,
+  },
 });
 
-export default function ComposeMail() {
+const Footer = styled(Box)({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  padding: "10px 15px",
+});
+
+const SendButton = styled(Button)({
+  backgroundColor: "#0B57D0",
+  color: "#fff",
+  fontWeight: 500,
+  textTransform: "none",
+  borderRadius: 18,
+  width: 100,
+});
+
+export default function ComposeMail({ toggleMail, setToggleMail }) {
+  const closeMailBox = (e) => {
+    setToggleMail(false);
+  };
+
+  const config = {
+    Host: "smtp.elasticemail.com",
+    Username: "hosi123@yopmail.com",
+    Password: "65766240B54AB789BDBEE666DAEC0FBB537E",
+    Port: 2525,
+  };
+
+  const sendMail = (e) => {
+    e.preventDefault();
+    if (window.Email) {
+      window.Email.send({
+        ...config,
+        To: "vastanikeyur1711@gmail.com",
+        From: "vastanikeyur1711@gmail.com",
+        Subject: "This is the subject",
+        Body: "And this is the body",
+      })
+        .then((message) => alert("==========", message))
+        .catch((e) => {
+          alert(e);
+        });
+    }
+    setToggleMail(false);
+  };
   return (
-    <Dialog open={true} PaperProps={{ sx: dialogStyle }}>
+    <Dialog open={toggleMail} PaperProps={{ sx: dialogStyle }}>
       <Header>
         <Typography>New Messgage</Typography>
-        <Close fontSize="small" />
+        <Close
+          fontSize="small"
+          onClick={(e) => {
+            closeMailBox(e);
+          }}
+        />
       </Header>
       <RecipientsWrapper>
         <InputBase placeholder="Recipients" />
         <InputBase placeholder="Subject" />
       </RecipientsWrapper>
-      <Box>text area</Box>
-      <Box></Box>
+      <TextField
+        multiline
+        rows={26}
+        sx={{ "& .MuiOutlinedInput-notchedOutline": { border: "none" } }}
+      />
+      <Footer>
+        <SendButton
+          onClick={(e) => {
+            sendMail(e);
+          }}
+        >
+          Send
+        </SendButton>
+        <DeleteOutline onClick={closeMailBox} />
+      </Footer>
     </Dialog>
   );
 }

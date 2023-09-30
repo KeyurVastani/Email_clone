@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Button, styled, List, ListItem } from "@mui/material";
 import { CreateOutlined } from "@mui/icons-material";
 import { SIDEBAR_DATA } from "../config/sidebar.config";
+import ComposeMail from "./ComposeMail";
 
 const ComposedButton = styled(Button)({
   background: "#c3e7ff",
@@ -26,9 +27,15 @@ const Contener = styled(Box)({
 });
 
 export default function SidebarContent() {
+  const [toggleMail, setToggleMail] = useState(false);
+  const toggleComposeMail = () => {
+    console.log("sdasdsdas", toggleMail);
+    setToggleMail((prev) => !prev);
+  };
+
   return (
     <Contener>
-      <ComposedButton variant="text">
+      <ComposedButton variant="text" onClick={toggleComposeMail}>
         <CreateOutlined />
         composed
       </ComposedButton>
@@ -40,6 +47,7 @@ export default function SidebarContent() {
           </ListItem>
         ))}
       </List>
+      <ComposeMail toggleMail={toggleMail} setToggleMail={setToggleMail} />
     </Contener>
   );
 }

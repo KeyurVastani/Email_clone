@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Drawer } from "@mui/material";
 import SidebarContent from "./SidebarContent";
 import ComposeMail from "./ComposeMail";
@@ -22,7 +22,6 @@ export default function SiderBar({ openDrawer }) {
       }}
     >
       <SidebarContent />
-      <ComposeMail />
     </Drawer>
   );
 }
